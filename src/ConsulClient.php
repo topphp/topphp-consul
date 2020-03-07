@@ -12,6 +12,8 @@ namespace Topphp\TopphpConsul;
 use Psr\Http\Message\ResponseInterface;
 use RuntimeException;
 use Topphp\TopphpClient\guzzle\HttpHelper;
+use Topphp\TopphpConsul\exception\ClientException;
+use Topphp\TopphpConsul\exception\ServerException;
 
 class ConsulClient
 {
@@ -67,7 +69,11 @@ class ConsulClient
             throw new RuntimeException('response is fail');
         }
         if ($response->getStatusCode() >= 400) {
-            throw new RuntimeException($response->getReasonPhrase(), $response->getStatusCode());
+            $message = "consul Error:" . $response->getReasonPhrase() . PHP_EOL . (string)$response->getBody();
+            if ($response->getStatusCode() >= 500) {
+                throw new ServerException($message, $response->getStatusCode());
+            }
+            throw new ClientException($message, $response->getStatusCode());
         }
         return new ConsulResponse(
             $response->getHeaders(),
