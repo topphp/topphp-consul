@@ -18,7 +18,7 @@ class ExampleTest extends HttpTestCase
         $c   = new ConsulClient();
         $a   = new Agent($c);
         $res = $a->members();
-
+        var_dump($res->getBody());
         $this->assertEquals($res->getStatusCode(), 200);
     }
 

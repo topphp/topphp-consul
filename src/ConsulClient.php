@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 namespace Topphp\TopphpConsul;
 
-use GuzzleHttp\Exception\ServerException;
 use Psr\Http\Message\ResponseInterface;
 use RuntimeException;
 use Topphp\TopphpClient\guzzle\HttpHelper;
@@ -28,26 +27,38 @@ class ConsulClient
 
     public function get($url, $data = []): ConsulResponse
     {
-        $response = HttpHelper::handler()->get($this->uri . $url, $data);
+        $response = HttpHelper::handler()->get($url, $this->init($data));
         return $this->getResponse($response);
     }
 
     public function post($url, array $data = []): ConsulResponse
     {
-        $response = HttpHelper::handler()->post($this->uri . $url, $data);
+        $response = HttpHelper::handler()->post($url, $this->init($data));
         return $this->getResponse($response);
     }
 
     public function put($url, array $data = []): ConsulResponse
     {
-        $response = HttpHelper::handler()->put($this->uri . $url, $data);
+        $response = HttpHelper::handler()->put($url, $this->init($data));
         return $this->getResponse($response);
     }
 
     public function delete($url, array $data = []): ConsulResponse
     {
-        $response = HttpHelper::handler()->delete($this->uri . $url, $data);
+        $response = HttpHelper::handler()->delete($url, $this->init($data));
         return $this->getResponse($response);
+    }
+
+    private function init($options)
+    {
+        $options = array_replace([
+            'base_uri' => $this->uri,
+        ], $options);
+
+        if (isset($options['body']) && is_array($options['body'])) {
+            $options['body'] = json_encode($options['body']);
+        }
+        return $options;
     }
 
     private function getResponse(ResponseInterface $response): ConsulResponse

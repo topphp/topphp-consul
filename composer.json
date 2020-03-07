@@ -14,7 +14,7 @@
     "require": {
         "php": "~7.2",
         "ext-json": "*",
-        "topphp/topphp-client": "^1.0",
+        "topphp/topphp-client": "^1.0.0",
         "topthink/framework": "^6.0.2"
     },
     "require-dev": {
