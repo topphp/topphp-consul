@@ -37,22 +37,6 @@ tests/
 vendor/
 ```
 
-
-## Install
-
-Via Composer
-
-``` bash
-$ composer create-project topphp/topphp-consul 你的组件名称
-```
-
-## Usage
-
-``` php
-$skeleton = new topphp\componentBuilder();
-echo $skeleton->echoPhrase('Hello, TOPPHP!');
-```
-
 ## Change log
 
 Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
